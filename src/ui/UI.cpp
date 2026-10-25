@@ -84,16 +84,27 @@ CUI::CUI(bool open) : m_openByDefault(open) {
 
         if (e.xkbKeysym == XKB_KEY_Escape)
             setWindowOpen(false);
-        else if (e.xkbKeysym == XKB_KEY_Down) {
+        else if (
+            e.xkbKeysym == XKB_KEY_Down ||
+            (e.xkbKeysym == XKB_KEY_n && (e.modMask & Hyprtoolkit::Input::HT_MODIFIER_CTRL))
+        ) {
+            m_inputBox->focus(false);
             if (m_activeElementId + 1 < m_currentResults.size())
                 m_activeElementId++;
             updateActive();
-        } else if (e.xkbKeysym == XKB_KEY_Up) {
+        } else if (
+            e.xkbKeysym == XKB_KEY_Up ||
+            (e.xkbKeysym == XKB_KEY_p && (e.modMask & Hyprtoolkit::Input::HT_MODIFIER_CTRL))
+        ) {
+            m_inputBox->focus(false);
             if (m_activeElementId > 0)
                 m_activeElementId--;
             updateActive();
         } else if (e.xkbKeysym == XKB_KEY_Return || e.xkbKeysym == XKB_KEY_KP_Enter)
             onSelected();
+        
+        else 
+            m_inputBox->focus(true);
     });
 }
 
